@@ -2,6 +2,7 @@
 #define WIFI_UTILS_H
 
 #include <WiFiS3.h>
+#include "config.h"
 #include "../arduino_secrets.h"
 
 class WifiHandler
@@ -17,31 +18,16 @@ public:
     }
   };
 
-  // std::vector<std::string> getTLELines(std::string cat_number)
-  // {
-  //   std::string raw = getRawTLEData(cat_number);
-  //   std::vector<std::string> tle_lines;
-  //   std::istringstream stream(raw);
-  //   std::string line;
-
-  //   while (std::getline(stream, line))
-  //   {
-  //     // Find the two lines of the TLE pattern. This is a bit brittle,
-  //     // but using a regex puts us over the available flash memory on the Arduino
-  //     if (line[0] == '1' or line[0] == '2')
-  //     {
-  //       tle_lines.push_back(line);
-  //     }
-  //   }
-  //   return tle_lines;
-  // };
-
   std::string getRawTLEData(std::string cat_number)
   {
     std::string data;
     bool server = connectToServer_(cat_number);
     while (!readData_(data))
       ;
+#ifdef DEBUG
+    std::cout << "Received data: ==== \n"
+              << data << std::endl;
+#endif
     return data;
   };
 

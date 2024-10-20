@@ -2,6 +2,7 @@
 #define SAT_UTILS_H
 
 #include "libsgp4/SGP4.h"
+#include "config.h"
 #include "wifi_utils.h"
 
 struct Direction
@@ -27,12 +28,18 @@ public:
   {
     auto now = std::chrono::system_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::minutes>(now - last_fetch);
+#ifdef DEBUG
+    std::cout << "elapsed: " << elapsed.count() << std::endl;
+#endif
     return elapsed.count() >= 30;
   }
   /// @brief Parses the response from the TLE request
   /// @param handler
   void getTLELines()
   {
+#ifdef DEBUG
+    std::cout << "Fetching TLE" << std::endl;
+#endif
     std::string raw = handler.getRawTLEData(cat_number);
     size_t pos = 0;
     constexpr char delimiter[] = "\r\n";
@@ -159,11 +166,10 @@ private:
       azimuth += 360.0;
     }
     const double elevation{asin(U_comp) * 180.0 / pi};
-
-    // Output the results
+#ifdef DEBUG
     std::cout << "Azimuth: " << azimuth << " degrees" << std::endl;
     std::cout << "Elevation: " << elevation << " degrees" << std::endl;
-
+#endif
     return Direction{azimuth, elevation};
   }
 };

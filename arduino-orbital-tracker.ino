@@ -1,5 +1,6 @@
+#include "src/config.h"
 #include "src/satellite_utils.h"
-#include "Arduino.h"
+#include "Arduino.h" // Arduino.h must come after satellite_utils.h, as Arduino.h ovewrites the `abs` macro that the sgp4 library depends on
 #include "AccelStepper.h"
 #include "RTC.h"
 #include "Servo.h"
@@ -7,7 +8,9 @@
 
 #include "src/wifi_utils.h"
 
-// Motor pin definitions:
+// This is the object to track. 25544 is the ISS. Find other interesting objects at http://celestrak.org/NORAD/elements/
+constexpr const char CATALOG_NUMBER[] = "25544";
+
 constexpr int motorPin1 = 8;  // IN1 on the ULN2003 driver
 constexpr int motorPin2 = 9;  // IN2 on the ULN2003 driver
 constexpr int motorPin3 = 10; // IN3 on the ULN2003 driver
@@ -26,10 +29,9 @@ Servo servo;
 WifiHandler wifiHandler;
 NTPClient timeClient(wifiHandler.Udp);
 
-Orbits orbitFinder;
-// http://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE
-constexpr const char ISS_cat_num[] = "25544";
-TleLines tle_lines{ISS_cat_num, wifiHandler};
+Orbits orbitFinder{LATITUDE, LONGITUDE, ALTITUDE};
+
+TleLines tle_lines{CATALOG_NUMBER, wifiHandler};
 
 int getStepsFromAngle(int angle)
 {
@@ -48,6 +50,10 @@ void setup()
     ;
 
   wifiHandler.connectToWiFi();
+
+#ifdef DEBUG
+  wifiHandler.printWifiStatus();
+#endif
 
   RTC.begin();
   timeClient.begin();
