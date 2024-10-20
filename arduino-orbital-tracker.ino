@@ -65,8 +65,7 @@ void loop()
     tle_lines.getTLELines();
   }
   Direction direction = orbitFinder.getDirection(tle_lines.line1, tle_lines.line2);
-  std::cout << "direction.azimuth: " << direction.azimuth << "direction.elevation: " << direction.elevation << std::endl;
   stepper.runToNewPosition(getStepsFromAngle(direction.azimuth));
-  // Serial.println(stepper.currentPosition());
+  servo.write(direction.elevation + 90);
   delay(1000);
 }
