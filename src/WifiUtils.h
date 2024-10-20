@@ -2,7 +2,7 @@
 #define WIFI_UTILS_H
 
 #include <WiFiS3.h>
-#include "config.h"
+#include "Config.h"
 #include "../arduino_secrets.h"
 
 class WifiHandler

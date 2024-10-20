@@ -2,8 +2,8 @@
 #define SAT_UTILS_H
 
 #include "libsgp4/SGP4.h"
-#include "config.h"
-#include "wifi_utils.h"
+#include "Config.h"
+#include "WifiUtils.h"
 
 struct Direction
 {

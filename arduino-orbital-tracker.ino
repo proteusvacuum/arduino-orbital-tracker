@@ -1,12 +1,11 @@
-#include "src/config.h"
-#include "src/satellite_utils.h"
+#include "src/Config.h"
+#include "src/SatelliteUtils.h"
 #include "Arduino.h" // Arduino.h must come after satellite_utils.h, as Arduino.h ovewrites the `abs` macro that the sgp4 library depends on
 #include "AccelStepper.h"
 #include "RTC.h"
 #include "Servo.h"
 #include <NTPClient.h>
-
-#include "src/wifi_utils.h"
+#include "src/WifiUtils.h"
 
 // This is the object to track. 25544 is the ISS. Find other interesting objects at http://celestrak.org/NORAD/elements/
 constexpr const char CATALOG_NUMBER[] = "25544";
