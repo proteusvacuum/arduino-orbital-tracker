@@ -18,9 +18,17 @@ public:
   std::string line1;
   std::string line2;
   std::string cat_number;
+  std::chrono::time_point<std::chrono::system_clock> last_fetch;
+
   WifiHandler handler;
   TleLines(std::string cat_number, WifiHandler &handler) : cat_number{cat_number}, handler{handler} {};
 
+  boolean shouldFetch()
+  {
+    auto now = std::chrono::system_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::minutes>(now - last_fetch);
+    return elapsed.count() >= 30;
+  }
   /// @brief Parses the response from the TLE request
   /// @param handler
   void getTLELines()
@@ -43,6 +51,7 @@ public:
       }
       raw.erase(0, pos + strlen(delimiter));
     }
+    last_fetch = std::chrono::system_clock::now();
   };
 };
 

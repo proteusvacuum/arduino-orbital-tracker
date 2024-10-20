@@ -60,7 +60,10 @@ void setup()
 
 void loop()
 {
-  // TODO: Get TLE every 30 minutes
+  if (tle_lines.shouldFetch())
+  {
+    tle_lines.getTLELines();
+  }
   Direction direction = orbitFinder.getDirection(tle_lines.line1, tle_lines.line2);
   std::cout << "direction.azimuth: " << direction.azimuth << "direction.elevation: " << direction.elevation << std::endl;
   stepper.runToNewPosition(getStepsFromAngle(direction.azimuth));
