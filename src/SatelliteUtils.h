@@ -33,8 +33,6 @@ public:
 #endif
     return elapsed.count() >= 30;
   }
-  /// @brief Parses the response from the TLE request
-  /// @param handler
   void getTLELines()
   {
 #ifdef DEBUG
